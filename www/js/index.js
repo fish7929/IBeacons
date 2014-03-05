@@ -72,7 +72,7 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
-
+//toFixed()方法可把 Number 四舍五入为指定小数位数的数字。
 function formatDistance(meters) {
     if(meters > 1) {
         return meters.toFixed(3) + ' m';
