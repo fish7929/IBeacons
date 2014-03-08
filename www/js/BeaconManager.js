@@ -7,12 +7,12 @@ function BeaconManager() {
     var beacons = [];
 
     function compareBeacons(a, b) {
-		alert('3');
+		alert('5');
         return a.minor === b.minor && a.major === b.major;
     }
 
     function updateBeacons(newBeacons) {
-		alert('2');
+		alert('4');
         var i, l, j, m, beacon1, beacon2, found;
 
         for(i= 0, l = newBeacons.length; i<l; i++) {
@@ -56,14 +56,14 @@ function BeaconManager() {
     }
 
     function trigger(event, data) {
-		alert('4');
+		alert('3');
         for(var i= 0, l=listeners[event].length; i<l; i++) {
             listeners[event][i](data);
         }
     }
 
     this.getBeacons = function() {
-		alert('5');
+		alert('2');
         return beacons;
     };
 
@@ -83,7 +83,7 @@ function BeaconManager() {
 			alert('11');
             setInterval(function () {
                 window.EstimoteBeacons.getBeacons(function (beacons) {
-					alert('111');
+					alert('1111');
                     updateBeacons(beacons);
                 });
             }, interval);
@@ -91,7 +91,6 @@ function BeaconManager() {
     };
 
     this.on = function(event, callback) {
-		alert('6');
         if(!listeners[event]) {
             throw "Unknown event '" + event + "'";
         }
@@ -102,4 +101,14 @@ function BeaconManager() {
 
         listeners[event].push(callback);
     };
+	
+	this.startMonitoring = function(){
+		alert('6');
+		window.EstimoteBeacons.startMonitoringForRegion(function(data){
+			alert(data);
+		},function(error){
+			console.log('error message: ' + error.code);
+		});
+	
+	};
 }

@@ -16,65 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-		alert("bindEvents");
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-		alert("onDeviceReady");
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-		alert("Received Event");
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+$(document).ready(function(){
+	//设置显示风格
+	$("#afui").get(0).className = "ios"; 
+	var beaconManager = new BeaconManager();
+    var beaconsList = $('#ranging');
+	beaconManager.startPulling(1000);
+	beaconManager.on('updated', function(beacon){
+		var item = document.getElementById('beacon_' + beacon.major + '_' + beacon.minor);
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+		if(item) {
+			item.innerText = beacon.major + '/' + beacon.minor + ' - ' + formatDistance(beacon.distance);
+		}
+	});
+	beaconManager.on('added', function(beacon) {
+		var item = document.createElement('li');
+		item.innerText = beacon.major + '/' + beacon.minor + ' - ' + formatDistance(beacon.distance);
+		item.id = 'beacon_' + beacon.major + '_' + beacon.minor;
 
-        var beaconManager = new BeaconManager();
-        var beaconsList = document.getElementById('beacons');
-        beaconManager.startPulling(1000);
-        beaconManager.on('updated', function(beacon){
-            var item = document.getElementById('beacon_' + beacon.major + '_' + beacon.minor);
+		beaconsList.append(item);
+	});
+	beaconManager.on('removed', function(beacon) {
+		var item = document.getElementById('beacon_' + beacon.major + '_' + beacon.minor);
 
-            if(item) {
-                item.innerText = beacon.major + '/' + beacon.minor + ' - ' + formatDistance(beacon.distance);
-            }
-        });
-        beaconManager.on('added', function(beacon) {
-            var item = document.createElement('li');
-            item.innerText = beacon.major + '/' + beacon.minor + ' - ' + formatDistance(beacon.distance);
-            item.id = 'beacon_' + beacon.major + '_' + beacon.minor;
+		if(item) {
+			beaconsList.remove(item);
+		}
+	});
+	beaconManager.startMonitoring();
+});
 
-            beaconsList.appendChild(item);
-        });
-        beaconManager.on('removed', function(beacon) {
-            var item = document.getElementById('beacon_' + beacon.major + '_' + beacon.minor);
-
-            if(item) {
-                beaconsList.removeChild(item);
-            }
-        });
-
-        console.log('Received Event: ' + id);
-    }
-};
 //toFixed()方法可把 Number 四舍五入为指定小数位数的数字。
 function formatDistance(meters) {
     if(meters > 1) {
