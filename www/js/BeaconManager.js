@@ -78,9 +78,9 @@ function BeaconManager() {
         if(interval <= 0) {
             throw "Interval must be a positive number."
         }
-
+		alert("222222");
         window.EstimoteBeacons.startRangingBeaconsInRegion(function () {
-			alert('11');
+			
             setInterval(function () {
                 window.EstimoteBeacons.getBeacons(function (beacons) {
 					alert('1111');
