@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.antxman.estimotebeacons" version="0.9">
+    <name>EstimoteBeacons</name>
+    <description>EstimoteBeacons</description>
+    <license>Apache 2.0</license>
+
+    <js-module src="www/EstimoteBeacons.js" name="EstimoteBeacons">
+        <clobbers target="EstimoteBeacons" />
+    </js-module>
+    <!-- android -->
+    <platform name="android">
+        <source-file src="src/android/EstimoteBeacons.java" target-dir="src/com/antxman/estimotebeacons" />
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EstimoteBeacons">
+                <param name="android-package" value="com.antxman.estimotebeacons.EstimoteBeacons" />
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <service android:exported="false" android:name="com.estimote.sdk.service.BeaconService" />
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:exported="false" android:name="com.estimote.sdk.service.BeaconService"/>
+        </config-file>
+        <source-file src="libs/estimote-sdk-preview.jar" target-dir="libs" />
+        <source-file src="libs/guava-15.0.jar" target-dir="libs" />
+    </platform>
+</plugin>

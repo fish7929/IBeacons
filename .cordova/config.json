@@ -1,1 +1,4 @@
-{"id":"com.example.beacon","name":"Ibeacon"}
+{
+    "id": "com.example.beacon",
+    "name": "Ibeacon"
+}
